@@ -40,7 +40,7 @@ const filmName = parseFilmName(filmFilename ?? "", filmYearCharAt[0]);
 let finalFilmName = filmName;
 const isCorrectName = prompt(`Is "${filmName}" the correct film name? (Y/n)`);
 
-if (isCorrectName?.toLowerCase() !== "y" || isCorrectName === "") {
+if (isCorrectName?.toLowerCase() !== "y" && isCorrectName !== "") {
   const userInput = prompt("Please enter the correct film name:");
   if (userInput && userInput.trim() !== "") {
     finalFilmName = userInput.trim();
