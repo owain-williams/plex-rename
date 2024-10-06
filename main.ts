@@ -86,23 +86,30 @@ Deno.renameSync(
   finalFilmName + " (" + filmYear + ")." + fileExtension
 );
 
-// Delete all files that aren't the film video file or the subtitles
-for (const entry of contents) {
-  if (entry.isFile) {
-    const filePath = mod.join(Deno.cwd(), entry.name);
+function deleteUnwantedItems(directory: string) {
+  for (const entry of Deno.readDirSync(directory)) {
+    const itemPath = mod.join(directory, entry.name);
     const isVideoFile = entry.name === filmFilename;
     const isSubtitleFile = subtitleFileNames.includes(entry.name);
 
     if (!isVideoFile && !isSubtitleFile) {
       try {
-        Deno.removeSync(filePath);
-        console.log(`Deleted: ${entry.name}`);
+        if (entry.isDirectory) {
+          Deno.removeSync(itemPath, { recursive: true });
+          console.log(`Deleted directory: ${entry.name}`);
+        } else if (entry.isFile) {
+          Deno.removeSync(itemPath);
+          console.log(`Deleted file: ${entry.name}`);
+        }
       } catch (error) {
         console.error(`Error deleting ${entry.name}: ${error.message}`);
       }
     }
   }
 }
+
+// Replace the existing deletion loop with this function call
+deleteUnwantedItems(Deno.cwd());
 
 // Rename the folder
 const newFolderName = `${finalFilmName} (${filmYear})`;
@@ -118,8 +125,3 @@ try {
 } catch (error) {
   console.error(`Error renaming folder: ${error.message}`);
 }
-
-const folderName = Deno.cwd();
-
-console.log(`folderName: ${folderName}`);
-console.log(`newFileName: ${finalFilmName} (${filmYear}).${fileExtension}`);
