@@ -53,7 +53,9 @@ export const parseFilmYearCharAt = (filmFileName: string): number[] => {
     if (!/^\d{4}$/.test(fourDigits)) {
       continue;
     }
-    results.push(i);
+    if (parseInt(fourDigits) > 1900 && parseInt(fourDigits) < 2100) {
+      results.push(i);
+    }
   }
   return results.reverse();
 };

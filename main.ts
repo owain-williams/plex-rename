@@ -34,9 +34,9 @@ if (!correctYear) {
   Deno.exit(1);
 }
 
-const filmYear = parseFilmYear(filmFilename ?? "", filmYearCharAt[0]);
+const filmYear = parseFilmYear(filmFilename ?? "", filmYearCharAt[yearIndex]);
 
-const filmName = parseFilmName(filmFilename ?? "", filmYearCharAt[0]);
+const filmName = parseFilmName(filmFilename ?? "", filmYearCharAt[yearIndex]);
 let finalFilmName = filmName;
 const isCorrectName = prompt(`Is "${filmName}" the correct film name? (Y/n)`);
 
